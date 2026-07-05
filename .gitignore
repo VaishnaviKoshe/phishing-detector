@@ -14,3 +14,11 @@ Thumbs.db
 
 # Environment variables (for future API keys)
 .env
+
+# Generated logs
+logs/
+*.log
+
+# Generated reports
+reports/
+*.pdf
