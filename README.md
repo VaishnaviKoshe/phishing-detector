@@ -430,6 +430,8 @@ The backend is designed to integrate seamlessly with a web frontend. Users can e
 
 ![Web Interface](screenshots/web.png)
 
+---
+
 ## Future Improvements
 
 - Machine Learning-based phishing detection
