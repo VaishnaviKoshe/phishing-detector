@@ -3,6 +3,7 @@ from analyzer import analyze_url_complete
 from logger import logger
 
 app = Flask(__name__)
+app.json.sort_keys = False
 
 @app.route("/")
 def home():
