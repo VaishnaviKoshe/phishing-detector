@@ -1,51 +1,59 @@
 # Phishing Detector
 
-A Python-based phishing URL detection system that analyzes URLs using multiple security checks and returns a phishing risk score.
+A Python-based phishing detection system that analyzes URLs using multiple security checks, SSL certificate validation, DNS lookups, WHOIS information, URL heuristics, and VirusTotal reputation analysis, and returns a phishing risk score. The project is deployed as a REST API using Flask and Render.
+
+---
 
 ## Features
 
-- URL parsing
-- HTTPS detection
+- URL validation
+- HTTPS verification
+- SSL certificate analysis
+- WHOIS domain age lookup
+- DNS record verification
 - Suspicious keyword detection
-- IP address detection
 - URL length analysis
 - Dot count analysis
 - URL shortener detection
 - Special character detection
+- IP address detection
 - Typosquatting detection
-- Domain age lookup
-- DNS validation
-- SSL certificate analysis
-- VirusTotal reputation check
-- Weighted phishing scoring
-- REST API using Flask
-- JSON report export
-- PDF report export
+- VirusTotal URL reputation analysis
+- Risk scoring system
+- JSON API responses
 - Logging support
+- PDF report generation
+- Cloud deployment using Render
 
 ---
 
 ## Project Structure
 
 ```
-phishing_detector/
-│
-├── app.py
-├── analyzer.py
-├── scoring.py
-├── report.py
-├── logger.py
-├── exporter.py
+phishing-detector/
 │
 ├── checks/
-│   ├── url_checks.py
+│   ├── __init__.py
 │   ├── network_checks.py
-│   └── reputation.py
+│   ├── reputation.py
+│   └── url_checks.py
 │
-├── reports/
 ├── logs/
+├── reports/
+├── screenshots/
+│
+├── analyzer.py
+├── app.py
+├── config.py
+├── exporter.py
+├── logger.py
+├── main.py
+├── report.py
+├── scoring.py
+├── requirements.txt
+├── Procfile
 ├── README.md
-└── requirements.txt
+└── .env
 ```
 
 ---
@@ -77,6 +85,21 @@ Scoring Engine
 JSON Response / PDF Report
 ```
 
+## Technologies Used
+
+- Python 3
+- Flask
+- Gunicorn
+- Requests
+- python-dotenv
+- dnspython
+- python-whois
+- tldextract
+- ReportLab
+- VirusTotal API
+- Render
+- GitHub
+
 ---
 
 ## Installation
@@ -84,7 +107,7 @@ JSON Response / PDF Report
 Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/VaishnaviKoshe/phishing-detector.git
 ```
 
 Create a virtual environment
@@ -109,12 +132,35 @@ pip install -r requirements.txt
 
 ---
 
-## Running the Project
+## Environment Variables
 
-Start the API
+Create a .env file.
+
+Example:
+
+text
+VT_API_KEY=YOUR_VIRUSTOTAL_API_KEY
+
+---
+
+## Running Locally
+
+Run the console application
+
+```bash
+python main.py
+```
+
+Run the API
 
 ```bash
 python app.py
+```
+
+or
+
+```bash
+gunicorn app:app
 ```
 
 Server starts at
@@ -127,9 +173,26 @@ http://127.0.0.1:5000
 
 ## API Endpoint
 
-### POST /analyze
+### Home
 
-Request
+```
+GET /
+```
+
+Response
+```
+Phishing Detector API is running!
+```
+
+---
+
+### Analyze URL
+
+```
+POST /analyze
+```
+
+Request Body
 
 ```json
 {
@@ -137,36 +200,70 @@ Request
 }
 ```
 
-Response
+Example Response
 
-```json
+json
 {
-    "url":"https://google.com",
-    "basic_info":{...},
-    "checks":{...},
-    "ssl":{...},
-    "virustotal":{...},
-    "result":{
-        "score":0,
-        "risk":"SAFE",
-        "reasons":[]
+    "url": "https://google.com",
+
+    "url_details": {
+        "scheme": "https",
+        "domain": "google.com",
+        "path": "",
+        "url_length": 18,
+        "dot_count": 1,
+        "special_characters": false,
+        "typosquatting": null
+    },
+
+    "ssl": {
+        "status": "Valid",
+        "issuer": "Google Trust Services",
+        "expiry": "2026-09-07",
+        "days_left": 63
+    },
+
+    "virustotal": {
+        "status": "Available",
+        "harmless": 64,
+        "malicious": 0,
+        "suspicious": 0
+    },
+
+    "result": {
+        "risk": "SAFE",
+        "score": 0,
+        "reasons": [
+            "No suspicious indicators detected."
+        ]
     }
 }
-```
 
 ---
 
-## Technologies Used
+## Risk Levels
 
-- Python
-- Flask
-- Requests
-- python-whois
-- dnspython
-- ReportLab
-- VirusTotal API
+| Score | Classification |
+|--------|---------------|
+| 0–29 | SAFE |
+| 30–59 | SUSPICIOUS |
+| 60–100 | PHISHING |
 
 ---
+
+## Deployment
+
+The project is deployed on Render using Gunicorn.
+
+Deployment includes:
+
+- Flask REST API
+- Automatic GitHub deployment
+- Environment variable support
+- HTTPS endpoint
+
+Live API:
+https://phishing-detector-fep7.onrender.com
 
 ---
 
@@ -238,15 +335,28 @@ The backend is designed to integrate seamlessly with a web frontend. Users can e
 
 ## Future Improvements
 
-- Machine Learning classifier
-- Email phishing detection
+- Machine Learning-based phishing detection
+- Email phishing analysis
 - QR code phishing detection
 - Browser extension
-- Real-time URL monitoring
-- Threat intelligence feeds
+- Web interface
+- User authentication
+- Database support
+- Threat intelligence integration
 
 ---
 
 ## Author
 
-Vaishnavi
+*Vaishnavi Koshe*
+
+Bachelor of Engineering (Cyber Security)
+
+GitHub:
+https://github.com/VaishnaviKoshe
+
+---
+
+## License
+
+This project is developed for educational and academic purposes.
