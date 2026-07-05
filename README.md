@@ -424,11 +424,9 @@ The application records important events such as incoming requests, analysis pro
 
 ---
 
-### 7. Web Interface *(Optional)*
+### 7. Web Interface *(Pending)*
 
 The backend is designed to integrate seamlessly with a web frontend. Users can enter a URL, submit it for analysis, and view the phishing detection results through a graphical interface.
-
-*(Add this screenshot after the frontend is completed.)*
 
 ![Web Interface](screenshots/web.png)
 
@@ -458,7 +456,7 @@ The backend is designed to integrate seamlessly with a web frontend. Users can e
 
 *Vaishnavi Koshe*
 
-Bachelor of Engineering (Cyber Security)
+Bachelor of CSE
 
 GitHub:
 https://github.com/VaishnaviKoshe
