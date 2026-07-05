@@ -2,6 +2,60 @@
 
 A Python-based phishing detection system that analyzes URLs using multiple security checks, SSL certificate validation, DNS lookups, WHOIS information, URL heuristics, and VirusTotal reputation analysis, and returns a phishing risk score. The project is deployed as a REST API using Flask and Render.
 
+![Python](https://img.shields.io/badge/Python-3.13-blue)
+![Flask](https://img.shields.io/badge/Flask-3.1-green)
+![Render](https://img.shields.io/badge/Deployment-Render-success)
+![License](https://img.shields.io/badge/License-Educational-orange)
+
+---
+
+## Project Status
+
+**Current Version:** v1.0
+
+### Completed
+- ✅ Detection Engine
+- ✅ URL Heuristic Analysis
+- ✅ DNS & SSL Analysis
+- ✅ WHOIS Domain Analysis
+- ✅ VirusTotal Integration
+- ✅ Risk Scoring Engine
+- ✅ Flask REST API
+- ✅ PDF & JSON Report Generation
+- ✅ Logging
+- ✅ GitHub Version Control
+- ✅ Cloud Deployment (Render)
+
+### In Progress
+- 🚧 Web Interface Integration (Frontend) (developed by Vaani Chandrakar)
+
+### Planned Enhancements
+- 🔹 Machine Learning-based Detection
+- 🔹 Email Phishing Analysis
+- 🔹 Browser Extension
+- 🔹 Database Support
+
+---
+
+## Table of Contents
+
+- Features
+- Project Structure
+- System Architecture
+- Technologies Used
+- Installation
+- Environment Variables
+- Running Locally
+- API Endpoint
+- Risk Levels
+- Deployment
+- Testing
+- Screenshots
+- Future Improvements
+- Acknowledgements
+- Author
+- License
+
 ---
 
 ## Features
@@ -61,29 +115,30 @@ phishing-detector/
 ## System Architecture
 
 ```
-User
-   │
-   ▼
-Frontend (Web Interface)
-   │
-   ▼
-Flask REST API
-   │
-   ▼
-Analysis Engine
-   │
-   ├── URL Checks
-   ├── DNS Lookup
-   ├── SSL Analysis
-   ├── WHOIS
-   ├── VirusTotal
-   │
-   ▼
-Scoring Engine
-   │
-   ▼
-JSON Response / PDF Report
+                 User
+                  │
+                  ▼
+        Web Interface / API Client
+                  │
+                  ▼
+            Flask REST API
+                  │
+                  ▼
+         Phishing Analysis Engine
+        ┌─────────┼─────────┐
+        │         │         │
+        ▼         ▼         ▼
+ URL Checks   Network   VirusTotal
+              Checks
+        │
+        ▼
+     Scoring Engine
+        │
+        ▼
+ JSON Response / PDF Report
 ```
+
+---
 
 ## Technologies Used
 
@@ -138,8 +193,9 @@ Create a .env file.
 
 Example:
 
-text
+```env
 VT_API_KEY=YOUR_VIRUSTOTAL_API_KEY
+```
 
 ---
 
@@ -200,9 +256,17 @@ Request Body
 }
 ```
 
-Example Response
+### Example Request
 
-json
+```bash
+curl -X POST https://phishing-detector-fep7.onrender.com/analyze \
+-H "Content-Type: application/json" \
+-d "{\"url\":\"https://google.com\"}"
+```
+
+### Example Response
+
+```json
 {
     "url": "https://google.com",
 
@@ -238,6 +302,7 @@ json
         ]
     }
 }
+```
 
 ---
 
@@ -262,8 +327,42 @@ Deployment includes:
 - Environment variable support
 - HTTPS endpoint
 
-Live API:
+### Live API:
 https://phishing-detector-fep7.onrender.com
+
+---
+
+## Testing
+
+The deployed REST API was tested using PowerShell by sending POST requests to the `/analyze` endpoint.
+
+Example:
+
+```powershell
+Invoke-RestMethod `
+-Uri "https://phishing-detector-fep7.onrender.com/analyze" `
+-Method POST `
+-ContentType "application/json" `
+-Body '{"url":"https://google.com"}'
+```
+
+Expected Response:
+
+```json
+{
+    "result": {
+        "risk": "SAFE",
+        "score": 0
+    }
+}
+```
+
+The API was also tested with:
+- Valid HTTPS URLs
+- Invalid URLs
+- Domains with missing DNS records
+- URLs containing suspicious keywords
+- Newly registered domains
 
 ---
 
@@ -343,6 +442,15 @@ The backend is designed to integrate seamlessly with a web frontend. Users can e
 - User authentication
 - Database support
 - Threat intelligence integration
+
+---
+
+## Acknowledgements
+
+- VirusTotal Public API
+- Flask Documentation
+- Render Cloud Platform
+- ReportLab
 
 ---
 
