@@ -1,6 +1,6 @@
-from url_checks import *
-from network_checks import *
-from reputation import *
+from checks.url_checks import *
+from checks.network_checks import *
+from checks.reputation import *
 from scoring import calculate_score, classify_score
 from logger import logger
 
