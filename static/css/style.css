@@ -1,0 +1,326 @@
+body {
+    font-family: Arial;
+    background: #0d1117;
+    color: #fff;
+    margin: 0
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background: #161b22
+}
+
+.logo {
+    color: #58a6ff;
+    font-size: 28px;
+    font-weight: bold
+}
+
+nav a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none
+}
+
+.container {
+    padding: 40px;
+    text-align: center
+}
+
+.btn {
+    background: #238636;
+    color: #fff;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 8px
+}
+
+.card {
+    background: #161b22;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    max-width: 700px
+}
+
+.input {
+    width: 80%;
+    padding: 12px
+}
+
+.hidden {
+    display: none
+}
+/* ========================= */
+/* PREMIUM UI UPGRADE START  */
+/* ========================= */
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:linear-gradient(135deg,#050816,#0d1117,#111827);
+}
+
+/* Navbar */
+
+header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+    backdrop-filter:blur(15px);
+    border-bottom:1px solid rgba(88,166,255,.2);
+}
+
+.logo{
+    transition:.4s;
+}
+
+.logo:hover{
+    color:#7dd3fc;
+    text-shadow:0 0 20px #58a6ff;
+}
+
+/* Navigation */
+
+nav a{
+    position:relative;
+}
+
+nav a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-6px;
+    width:0;
+    height:2px;
+    background:#58a6ff;
+    transition:.4s;
+}
+
+nav a:hover::after{
+    width:100%;
+}
+
+/* Hero */
+
+.hero h1{
+    margin: bottom 25px;
+    line-height:1.2;
+}
+
+/* Button */
+
+.btn{
+
+    transition:.35s;
+    box-shadow:0 0 20px rgba(35,134,54,.3);
+
+}
+
+.btn:hover{
+
+    transform:translateY(-5px) scale(1.04);
+
+    box-shadow:
+    0 0 15px #238636,
+    0 0 35px #238636;
+
+}
+
+/* Cards */
+
+.card{
+
+backdrop-filter:blur(12px);
+
+background:rgba(22,27,34,.75);
+
+transition:.35s;
+
+overflow:hidden;
+
+position:relative;
+
+}
+
+.card::before{
+
+content:"";
+
+position:absolute;
+
+left:-100%;
+
+top:0;
+
+height:100%;
+
+width:100%;
+
+background:linear-gradient(
+90deg,
+transparent,
+rgba(255,255,255,.08),
+transparent
+);
+
+transition:.8s;
+
+}
+
+.card:hover::before{
+
+left:100%;
+
+}
+
+.card:hover{
+
+transform:translateY(-12px);
+
+box-shadow:
+0 0 20px rgba(88,166,255,.25);
+
+}
+
+/* Forms */
+
+.form-box{
+
+background:rgba(22,27,34,.8);
+
+backdrop-filter:blur(18px);
+
+box-shadow:
+0 0 35px rgba(0,0,0,.35);
+
+}
+
+.form-box input{
+
+transition:.3s;
+
+}
+
+.form-box input:focus{
+
+outline:none;
+
+border:1px solid #58a6ff;
+
+box-shadow:
+0 0 15px rgba(88,166,255,.5);
+
+}
+
+/* Scan Box */
+
+.scan-box{
+
+background:rgba(22,27,34,.85);
+
+backdrop-filter:blur(18px);
+
+box-shadow:
+0 0 35px rgba(0,0,0,.4);
+
+}
+
+.result{
+
+animation:fadeUp .7s ease;
+
+border-left:5px solid #58a6ff;
+
+}
+
+/* Tables */
+
+table{
+
+background:#161b22;
+
+border-radius:10px;
+
+overflow:hidden;
+
+}
+
+tr{
+
+transition:.3s;
+
+}
+
+tr:hover{
+
+background:#21262d;
+
+}
+
+/* Scroll Bar */
+
+::-webkit-scrollbar{
+
+width:10px;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+background:#58a6ff;
+
+border-radius:20px;
+
+}
+
+::-webkit-scrollbar-track{
+
+background:#0d1117;
+
+}
+
+/* Animation */
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
+
+.hero,
+.card,
+.form-box,
+.scan-box{
+
+animation:fadeUp .8s ease;
+
+}
+.hero p{
+    margin:25px 0 35px;
+    font-size:20px;
+    line-height:1.8;
+    color:#c9d1d9;
+}
+
+/* ========================= */
+/* PREMIUM UI UPGRADE END    */
+/* ========================= */

@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from analyzer import analyze_url_complete
 from logger import logger
 
@@ -7,7 +7,23 @@ app.json.sort_keys = False
 
 @app.route("/")
 def home():
-    return "Phishing Detector API is running!"
+    return render_template("index.html")
+
+@app.route("/scan")
+def scan():
+    return render_template("scan.html")
+
+@app.route("/history")
+def history():
+    return render_template("history.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/register")
+def register():
+    return render_template("register.html")
 
 @app.route("/analyze", methods=["POST"])
 def analyze():
