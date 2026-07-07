@@ -22,26 +22,100 @@ document.getElementById("status").innerText = "Scanning...";
         });
 
         const data = await response.json();
-    
 
 document.getElementById("result").classList.remove("hidden");
 
 document.getElementById("status").innerText = "Completed";
 
-document.getElementById("safe").innerText =
-        data.result.risk + " (Score: " + data.result.score + ")";
+        /* Risk */
+
+        const risk = document.getElementById("risk");
+        
+        risk.innerText = data.result.risk;
+
+        risk.className = "";
+
+        if(data.result.risk==="SAFE")
+            risk.classList.add("badge","safe");
+
+        else if(data.result.risk==="SUSPICIOUS")
+            risk.classList.add("badge","suspicious");
+
+        else
+            risk.classList.add("badge","phishing");
+
+document.getElementById("score").innerText =
+    data.result.score + " / 100";
+
+        /* URL */
+
+document.getElementById("domain").innerText =
+    data.basic_info.domain;
+
+document.getElementById("scheme").innerText =
+    data.basic_info.scheme.toUpperCase();
+
+document.getElementById("path").innerText =
+    data.basic_info.path || "/";
+
+document.getElementById("length").innerText =
+    data.checks.url_length;
+
+document.getElementById("dns").innerText =
+    data.checks.dns_status;
+
+document.getElementById("age").innerText =
+    data.checks.domain_age + " days";
+
+        /* SSL */
+
+document.getElementById("sslStatus").innerText =
+    data.ssl.status;
+
+document.getElementById("sslIssuer").innerText =
+    data.ssl.issuer;
+
+document.getElementById("sslExpiry").innerText =
+    data.ssl.expiry;
+
+document.getElementById("sslDays").innerText =
+    data.ssl.days_left;
+
+        /* VirusTotal */
 
 document.getElementById("vtStatus").innerText =
-    "Status: " + data.virustotal.status;
+    data.virustotal.status;
 
 document.getElementById("vtHarmless").innerText =
-    "Harmless: " + data.virustotal.harmless;
+    data.virustotal.harmless;
 
 document.getElementById("vtMalicious").innerText =
-    "Malicious: " + data.virustotal.malicious;
+    data.virustotal.malicious;
 
 document.getElementById("vtSuspicious").innerText =
-    "Suspicious: " + data.virustotal.suspicious;
+    data.virustotal.suspicious;
+
+        /* Reasons */
+
+const reasonList = document.getElementById("reasons");
+
+reasonList.innerHTML = "";
+
+data.result.reasons.forEach(reason => {
+
+    const li = document.createElement("li");
+
+    li.innerHTML = "🟢 " + reason;
+
+    reasonList.appendChild(li);
+
+});
+
+        /* Show Download Buttons */
+
+document.getElementById("pdfBtn").classList.remove("hidden");
+
+document.getElementById("jsonBtn").classList.remove("hidden");
 
     }
     catch (error) {
@@ -53,4 +127,16 @@ document.getElementById("vtSuspicious").innerText =
 
     }
     
+}
+
+function downloadPDF() {
+
+    window.location = "/download/pdf";
+
+}
+
+function downloadJSON() {
+
+    window.location = "/download/json";
+
 }

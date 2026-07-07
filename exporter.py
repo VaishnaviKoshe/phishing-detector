@@ -1,60 +1,788 @@
 import json
+import os
 
-from reportlab.platypus import SimpleDocTemplate, Paragraph
-from reportlab.lib.styles import getSampleStyleSheet
+from datetime import datetime
+from reportlab.lib.enums import TA_CENTER
+from reportlab.lib import colors
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.units import inch
+from reportlab.platypus import (
+    SimpleDocTemplate,
+    Image,
+    Paragraph,
+    Spacer,
+    Table,
+    TableStyle
+)
 
+styles = getSampleStyleSheet()
+
+TITLE_STYLE = ParagraphStyle(
+    "TitleStyle",
+    parent=styles["Heading1"],
+    fontName="Helvetica-Bold",
+    fontSize=24,
+    textColor=colors.HexColor("#0B3D91"),
+    alignment=TA_CENTER,
+    spaceAfter=15,
+)
+
+SECTION_STYLE = ParagraphStyle(
+    "SectionStyle",
+    parent=styles["Heading2"],
+    fontName="Helvetica-Bold",
+    fontSize=16,
+    textColor=colors.HexColor("#0B3D91"),
+    spaceBefore=12,
+    spaceAfter=8,
+)
+
+BODY_STYLE = ParagraphStyle(
+    "BodyStyle",
+    parent=styles["BodyText"],
+    fontName="Helvetica",
+    fontSize=10,
+    leading=15,
+)
+
+FOOTER_STYLE = ParagraphStyle(
+    "FooterStyle",
+    parent=styles["BodyText"],
+    fontName="Helvetica",
+    fontSize=9,
+    alignment=TA_CENTER,
+    textColor=colors.grey,
+)
+
+NAVY = colors.HexColor("#0B3D91")
+
+GREEN = colors.HexColor("#16A34A")
+
+RED = colors.HexColor("#DC2626")
+
+PURPLE = colors.HexColor("#6B21A8")
+
+ORANGE = colors.HexColor("#EA580C")
+
+TEAL = colors.HexColor("#0F766E")
+
+LIGHT = colors.HexColor("#F3F4F6")
+
+WHITE = colors.white
+
+def build_header(result):
+    story = []
+
+    return story
+
+    story.extend(build_header(result))
+
+
+# -----------------------------
+# JSON Export
+# -----------------------------
 def export_json(result, filename="report.json"):
     with open(filename, "w") as file:
         json.dump(result, file, indent=4)
 
     return filename
 
+
+# -----------------------------
+# Helper Function
+# -----------------------------
+def make_table(data, header_color):
+
+    table = Table(data, colWidths=[2.2 * inch, 3.6 * inch])
+
+    table.setStyle(TableStyle([
+
+        ("BACKGROUND", (0, 0), (-1, 0), header_color),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+
+        ("BACKGROUND", (0, 1), (0, -1), colors.HexColor("#EAF4FF")),
+
+        ("GRID", (0, 0), (-1, -1), 1, colors.grey),
+
+        ("FONTNAME", (0, 0), (-1, 0), "Helvetica-Bold"),
+        ("FONTNAME", (0, 1), (0, -1), "Helvetica-Bold"),
+
+        ("BOTTOMPADDING", (0, 0), (-1, 0), 10),
+        ("TOPPADDING", (0, 0), (-1, -1), 8),
+        ("BOTTOMPADDING", (0, 1), (-1, -1), 8),
+
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE")
+
+    ]))
+
+    return table
+
+def generate_report_id():
+    return "PHISH-" + datetime.now().strftime("%Y%m%d-%H%M%S")
+
+
+# -----------------------------
+# PDF Export
+# -----------------------------
 def export_pdf(result, filename="report.pdf"):
+
     doc = SimpleDocTemplate(filename)
 
     styles = getSampleStyleSheet()
+
     story = []
 
-    story.append(Paragraph("Phishing Detection Report", styles["Title"]))
+    # -----------------------------------
+    # Header Information
+    # -----------------------------------
 
-    story.append(Paragraph(f"<b>URL:</b> {result['url']}", styles["BodyText"]))
-    story.append(Paragraph(f"<b>Risk Level:</b> {result['result']['risk']}", styles["BodyText"]))
-    story.append(Paragraph(f"<b>Score:</b> {result['result']['score']}", styles["BodyText"]))
+    generated_by = "PhishGuard v1.0 - Phishing Detection System"
 
-    story.append(Paragraph("<br/><b>SSL Information</b>", styles["Heading2"]))
-    story.append(Paragraph(
-        f"Status: {result['ssl']['status']}",
-        styles["BodyText"]
-    ))
+    generated_date = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
-    story.append(Paragraph("<br/><b>VirusTotal</b>", styles["Heading2"]))
-    story.append(Paragraph(
-        f"Status: {result['virustotal']['status']}",
-        styles["BodyText"]
-    ))
+    report_id = generate_report_id()
 
-    story.append(Paragraph(
-        f"Malicious: {result['virustotal']['malicious']}",
-        styles["BodyText"]
-    ))
+    logo_path = "static/images/logo.jpeg"
 
-    story.append(Paragraph(
-        f"Suspicious: {result['virustotal']['suspicious']}",
-        styles["BodyText"]
-    ))
-
-    story.append(Paragraph(
-        f"Harmless: {result['virustotal']['harmless']}",
-        styles["BodyText"]
-    ))
-
-    story.append(Paragraph("<br/><b>Reasons</b>", styles["Heading2"]))
-
-    if result["result"]["reasons"]:
-        for reason in result["result"]["reasons"]:
-            story.append(Paragraph(f"• {reason}", styles["BodyText"]))
+    if os.path.exists(logo_path):
+        logo = Image(logo_path, width=80, height=80)
     else:
-        story.append(Paragraph("No suspicious indicators detected.", styles["BodyText"]))
+        logo = Paragraph("<b>PhishGuard</b>", styles["Heading2"])
+
+    header_data = [
+
+        [
+            logo,
+
+            Paragraph(
+                f"""
+                <b><font size=18>PhishGuard</font></b><br/><br/>
+
+                <b>Generated By :</b> {generated_by}<br/>
+
+                <b>Generated Date :</b> {generated_date}<br/>
+
+                <b>Report ID :</b> {report_id}<br/>
+
+                <b>Scanned URL :</b>{result['url']}<br/>
+                """,
+
+                styles["BodyText"]
+            )
+
+        ]
+
+    ]
+
+    header = Table(header_data, colWidths=[1.3*inch, 5*inch])
+
+    header.setStyle(TableStyle([
+
+        ("VALIGN",(0,0),(-1,-1),"TOP"),
+
+        ("BOTTOMPADDING",(0,0),(-1,-1),18)
+
+    ]))
+
+    story.append(header)
+
+    story.append(Spacer(1,15))
+
+    story.append(
+        Paragraph(
+            "<font size=24><b>Phishing URL Detection Report</b></font>",
+            styles["Title"]
+        )
+    )
+
+    story.append(Spacer(1,25))
+
+    # -----------------------------
+    # RISK SUMMARY BANNER
+    # -----------------------------
+
+    risk = result["result"]["risk"]
+    score = result["result"]["score"]
+
+    # Choose banner color based on risk
+    if risk == "SAFE":
+        banner_color = colors.HexColor("#16A34A")
+        verdict = "No phishing or malicious indicators detected."
+
+    elif risk == "SUSPICIOUS":
+        banner_color = colors.HexColor("#F59E0B")
+        verdict = "Some suspicious indicators were detected."
+
+    else:
+        banner_color = colors.HexColor("#DC2626")
+        verdict = "High probability of phishing."
+
+    banner = Table([[
+        Paragraph(
+            "<font color='white'><b>RISK LEVEL</b><br/><font size='22'><b>%s</b></font></font>" % risk, styles["BodyText"]
+        ),
+
+        Paragraph(
+            "<font color='white'><b>RISK SCORE</b><br/><font size='22'><b>%d / 100</b></font></font>" % score, styles["BodyText"]
+        ),
+
+        Paragraph(
+            "<font color='white'><b>OVERALL VERDICT</b><br/>%s</font>" % verdict, styles["BodyText"]
+        )
+
+    ]],
+    colWidths=[2.1*inch,2.0*inch,3.2*inch])
+
+    banner.setStyle(TableStyle([
+
+        ("BACKGROUND",(0,0),(-1,-1),banner_color),
+
+        ("TEXTCOLOR",(0,0),(-1,-1),colors.white),
+
+        ("ALIGN",(0,0),(-1,-1),"CENTER"),
+
+        ("VALIGN",(0,0),(-1,-1),"MIDDLE"),
+
+        ("BOTTOMPADDING",(0,0),(-1,-1),18),
+
+        ("TOPPADDING",(0,0),(-1,-1),18),
+
+        ("LINEBELOW",(0,0),(-1,-1),1,colors.white)
+
+    ]))
+
+    story.append(banner)
+
+    story.append(Spacer(1,20))
+
+    # ------------------------------
+    # SUMMARY
+    # ------------------------------
+
+    story.append(
+        Paragraph(
+            "<font color='#0B3D91'><b>1. SUMMARY</b></font>",
+            styles["Heading2"]
+        )
+    )
+
+    story.append(Spacer(1,10))
+
+    summary_data = [
+
+        ["Parameter","Details"],
+
+        ["URL", result["url"]],
+
+        ["Risk Level", result["result"]["risk"]],
+
+        ["Risk Score", f"{result['result']['score']} / 100"],
+
+        ["Overall Verdict",
+        "No threats detected"
+        if result["result"]["risk"]=="SAFE"
+        else "Potential phishing detected"]
+
+    ]
+
+    summary_table = Table(summary_data,
+                colWidths=[2.3*inch,4.2*inch])
+
+    summary_table.setStyle(TableStyle([
+
+        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#0B3D91")),
+
+        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
+
+        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+
+        ("FONTSIZE",(0,0),(-1,0),11),
+
+        ("BOTTOMPADDING",(0,0),(-1,0),10),
+
+        ("TOPPADDING",(0,0),(-1,0),10),
+
+        ("GRID",(0,0),(-1,-1),0.5,colors.HexColor("#C9D2E3")),
+
+        ("BACKGROUND",(0,1),(-1,-1),colors.white),
+
+        ("VALIGN",(0,0),(-1,-1),"MIDDLE"),
+
+        ("LEFTPADDING",(0,0),(-1,-1),10),
+
+        ("RIGHTPADDING",(0,0),(-1,-1),10),
+
+    ]))
+
+    if result["result"]["risk"] == "SAFE":
+        summary_table.setStyle(TableStyle([
+            ("TEXTCOLOR",(1,2),(1,2),colors.HexColor("#16A34A")),
+            ("FONTNAME",(1,2),(1,2),"Helvetica-Bold"),
+        ]))
+
+    elif result["result"]["risk"] == "SUSPICIOUS":
+        summary_table.setStyle(TableStyle([
+            ("TEXTCOLOR",(1,2),(1,2),colors.HexColor("#F59E0B")),
+            ("FONTNAME",(1,2),(1,2),"Helvetica-Bold"),
+        ]))
+
+    else:
+        summary_table.setStyle(TableStyle([
+            ("TEXTCOLOR",(1,2),(1,2),colors.HexColor("#DC2626")),
+            ("FONTNAME",(1,2),(1,2),"Helvetica-Bold"),
+        ]))
+
+    story.append(summary_table)
+
+    story.append(Spacer(1,20))
+
+    # ===========================
+    # URL Information
+    # ===========================
+
+    story.append(
+        Paragraph(
+            "<font color='#0B3D91'><b>2. URL INFORMATION</b></font>",
+            styles["Heading2"]
+        )
+    )
+
+    story.append(Spacer(1,10))
+
+    url_data = [
+
+        ["Parameter", "Details"],
+
+        ["Protocol", result["basic_info"]["scheme"].upper()],
+
+        ["Domain", result["basic_info"]["domain"]],
+
+        ["Path",
+        result["basic_info"]["path"] if result["basic_info"]["path"] else "-"],
+
+        ["DNS Status", result["checks"]["dns_status"]],
+
+        ["Domain Age",
+        f"{result['checks']['domain_age']} days"],
+
+        ["URL Length",
+        str(result["checks"]["url_length"])],
+
+        ["HTTPS",
+        "Enabled" if result["checks"]["https"] else "Disabled"],
+
+        ["IP Address",
+        "Yes" if result["checks"]["ip_address"] else "No"]
+
+    ]
+
+    url_table = Table(
+        url_data,
+        colWidths=[2.3*inch,4.2*inch]
+    )
+
+    url_table.setStyle(TableStyle([
+
+        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#0B3D91")),
+
+        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
+
+        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+
+        ("FONTSIZE",(0,0),(-1,0),11),
+
+        ("BOTTOMPADDING",(0,0),(-1,0),10),
+
+        ("TOPPADDING",(0,0),(-1,0),10),
+
+        ("GRID",(0,0),(-1,-1),0.5,colors.HexColor("#C9D2E3")),
+
+        ("BACKGROUND",(0,1),(-1,-1),colors.white),
+
+        ("VALIGN",(0,0),(-1,-1),"MIDDLE"),
+
+        ("LEFTPADDING",(0,0),(-1,-1),10),
+
+        ("RIGHTPADDING",(0,0),(-1,-1),10),
+
+    ]))
+
+    # DNS Status
+    dns_row = 4
+
+    if result["checks"]["dns_status"] == "Valid":
+        url_table.setStyle(TableStyle([
+            ("TEXTCOLOR",(1,dns_row),(1,dns_row),colors.HexColor("#16A34A")),
+            ("FONTNAME",(1,dns_row),(1,dns_row),"Helvetica-Bold"),
+        ]))
+    else:
+        url_table.setStyle(TableStyle([
+            ("TEXTCOLOR",(1,dns_row),(1,dns_row),colors.HexColor("#DC2626")),
+            ("FONTNAME",(1,dns_row),(1,dns_row),"Helvetica-Bold"),
+        ]))
+
+    # HTTPS
+    https_row = 7
+
+    if result["checks"]["https"]:
+        url_table.setStyle(TableStyle([
+            ("TEXTCOLOR",(1,https_row),(1,https_row),colors.HexColor("#16A34A")),
+            ("FONTNAME",(1,https_row),(1,https_row),"Helvetica-Bold"),
+        ]))
+    else:
+        url_table.setStyle(TableStyle([
+            ("TEXTCOLOR",(1,https_row),(1,https_row),colors.HexColor("#DC2626")),
+            ("FONTNAME",(1,https_row),(1,https_row),"Helvetica-Bold"),
+        ]))
+
+    story.append(url_table)
+
+    story.append(Spacer(1,20))
+
+    # ---------------------------
+    # SSL
+    # ---------------------------
+
+    story.append(
+        Paragraph(
+            "<font color='#0B3D91'><b>3. SSL CERTIFICATE</b></font>",
+            styles["Heading2"]
+        )
+    )
+
+    story.append(Spacer(1,10))
+
+    ssl_data = [
+
+        ["Parameter","Details"],
+
+        ["Status", result["ssl"]["status"]],
+
+        ["Issuer", result["ssl"]["issuer"]],
+
+        ["Expiry Date", result["ssl"]["expiry"]],
+
+        ["Days Left", str(result["ssl"]["days_left"])]
+
+    ]
+
+    ssl_table = Table(
+        ssl_data,
+        colWidths=[2.3*inch,4.2*inch]
+    )
+
+    ssl_table.setStyle(TableStyle([
+
+        ("BACKGROUND",(0,0),(-1,0),colors.HexColor("#0B3D91")),
+
+        ("TEXTCOLOR",(0,0),(-1,0),colors.white),
+
+        ("FONTNAME",(0,0),(-1,0),"Helvetica-Bold"),
+
+        ("FONTSIZE",(0,0),(-1,0),11),
+
+        ("BOTTOMPADDING",(0,0),(-1,0),10),
+
+        ("TOPPADDING",(0,0),(-1,0),10),
+
+        ("GRID",(0,0),(-1,-1),0.5,colors.HexColor("#C9D2E3")),
+
+        ("BACKGROUND",(0,1),(-1,-1),colors.white),
+
+        ("VALIGN",(0,0),(-1,-1),"MIDDLE"),
+
+        ("LEFTPADDING",(0,0),(-1,-1),10),
+
+        ("RIGHTPADDING",(0,0),(-1,-1),10),
+
+    ]))
+
+    if result["ssl"]["status"] == "Valid":
+        ssl_table.setStyle(TableStyle([
+            ("TEXTCOLOR",(1,1),(1,1),colors.HexColor("#16A34A")),
+            ("FONTNAME",(1,1),(1,1),"Helvetica-Bold"),
+        ]))
+
+    else:
+        ssl_table.setStyle(TableStyle([
+            ("TEXTCOLOR",(1,1),(1,1),colors.HexColor("#DC2626")),
+            ("FONTNAME",(1,1),(1,1),"Helvetica-Bold"),
+        ]))
+
+    story.append(ssl_table)
+
+    story.append(Spacer(1,20))
+
+    # ---------------------------
+    # VirusTotal
+    # ---------------------------
+
+    story.append(
+        Paragraph(
+            "<font color='#0B3D91'><b>4. VIRUSTOTAL ANALYSIS</b></font>",
+            styles["Heading2"]
+        )
+    )
+
+    story.append(Spacer(1,10))
+
+    vt_data = [
+
+        ["Parameter", "Details"],
+
+        ["Status", result["virustotal"]["status"]],
+
+        ["Harmless", str(result["virustotal"]["harmless"])],
+
+        ["Malicious", str(result["virustotal"]["malicious"])],
+
+        ["Suspicious", str(result["virustotal"]["suspicious"])]
+
+    ]
+
+    vt_table = Table(
+        vt_data,
+        colWidths=[2.3*inch, 4.2*inch]
+    )
+
+    vt_table.setStyle(TableStyle([
+
+        ("BACKGROUND", (0,0), (-1,0), colors.HexColor("#0B3D91")),
+
+        ("TEXTCOLOR", (0,0), (-1,0), colors.white),
+
+        ("FONTNAME", (0,0), (-1,0), "Helvetica-Bold"),
+
+        ("FONTSIZE", (0,0), (-1,0), 11),
+
+        ("BOTTOMPADDING", (0,0), (-1,0), 10),
+
+        ("TOPPADDING", (0,0), (-1,0), 10),
+
+        ("GRID", (0,0), (-1,-1), 0.5, colors.HexColor("#C9D2E3")),
+
+        ("BACKGROUND", (0,1), (-1,-1), colors.white),
+
+        ("VALIGN", (0,0), (-1,-1), "MIDDLE"),
+
+        ("LEFTPADDING", (0,0), (-1,-1), 10),
+
+        ("RIGHTPADDING", (0,0), (-1,-1), 10),
+
+    ]))
+
+    # Status
+    if result["virustotal"]["status"] == "Available":
+
+        vt_table.setStyle(TableStyle([
+            ("TEXTCOLOR", (1,1), (1,1), colors.HexColor("#16A34A")),
+            ("FONTNAME", (1,1), (1,1), "Helvetica-Bold"),
+        ]))
+
+    # Harmless (Green)
+    vt_table.setStyle(TableStyle([
+        ("TEXTCOLOR", (1,2), (1,2), colors.HexColor("#16A34A")),
+        ("FONTNAME", (1,2), (1,2), "Helvetica-Bold"),
+    ]))
+
+    # Malicious (Red)
+    vt_table.setStyle(TableStyle([
+        ("TEXTCOLOR", (1,3), (1,3), colors.HexColor("#DC2626")),
+        ("FONTNAME", (1,3), (1,3), "Helvetica-Bold"),
+    ]))
+
+    # Suspicious (Orange)
+    vt_table.setStyle(TableStyle([
+        ("TEXTCOLOR", (1,4), (1,4), colors.HexColor("#F59E0B")),
+        ("FONTNAME", (1,4), (1,4), "Helvetica-Bold"),
+    ]))
+
+    story.append(vt_table)
+
+    story.append(Spacer(1,20))
+
+    # ---------------------------
+    # Detection Reasons
+    # ---------------------------
+
+    story.append(
+        Paragraph(
+            "<font color='#0B3D91'><b>5. SECURITY FINDINGS</b></font>",
+            styles["Heading2"]
+        )
+    )
+
+    story.append(Spacer(1,10))
+
+    findings = []
+
+    # HTTPS
+    if result["checks"]["https"]:
+        findings.append(("GOOD", "HTTPS protocol is enabled."))
+    else:
+        findings.append(("BAD", "HTTPS is not enabled."))
+
+    # SSL
+    if result["ssl"]["status"] == "Valid":
+        findings.append(("GOOD", "SSL certificate is valid."))
+    else:
+        findings.append(("BAD", "SSL certificate is invalid or unavailable."))
+
+    # DNS
+    if result["checks"]["dns_status"] == "Valid":
+        findings.append(("GOOD", "DNS records resolved successfully."))
+    else:
+        findings.append(("BAD", "DNS records could not be resolved."))
+
+    # Domain Age
+    age = result["checks"]["domain_age"]
+
+    if age >= 365:
+        findings.append(("GOOD", f"Domain age is {age} days."))
+    elif age >= 90:
+        findings.append(("WARNING", f"Domain is relatively new ({age} days)."))
+    else:
+        findings.append(("BAD", f"Very new domain ({age} days)."))
+
+    # VirusTotal
+    malicious = result["virustotal"]["malicious"]
+    suspicious = result["virustotal"]["suspicious"]
+
+    if malicious == 0 and suspicious == 0:
+        findings.append(("GOOD", "VirusTotal reports no malicious detections."))
+    elif malicious == 0:
+        findings.append(("WARNING", f"{suspicious} suspicious engine(s) detected."))
+    else:
+        findings.append(("BAD", f"{malicious} malicious engine(s) detected."))
+
+    # URL Length
+    length = result["checks"]["url_length"]
+
+    if length < 75:
+        findings.append(("GOOD", f"URL length is normal ({length} characters)."))
+    else:
+        findings.append(("WARNING", f"Long URL detected ({length} characters)."))
+
+    # IP Address
+    if result["checks"]["ip_address"]:
+        findings.append(("BAD", "URL uses an IP address instead of a domain."))
+    else:
+        findings.append(("GOOD", "URL uses a valid domain name."))
+
+    # URL Shortener
+    if result["checks"]["shortener"]:
+        findings.append(("WARNING", "URL shortening service detected."))
+    else:
+        findings.append(("GOOD", "No URL shortening service detected."))
+
+    # Keywords
+    keywords = result["checks"]["keywords"]
+
+    if keywords:
+        findings.append(("WARNING", "Suspicious keywords detected: " + ", ".join(keywords)))
+    else:
+        findings.append(("GOOD", "No suspicious keywords detected."))
+
+    for status, message in findings:
+
+        if status == "GOOD":
+            color = "#16A34A"
+            icon = "✔"
+
+        elif status == "WARNING":
+            color = "#F59E0B"
+            icon = "⚠"
+
+        else:
+            color = "#DC2626"
+            icon = "✖"
+
+        story.append(
+            Paragraph(
+                f"<font color='{color}'><b>{icon} {message}</b></font>",
+                styles["BodyText"]
+            )
+        )
+
+        story.append(Spacer(1,5))
+
+    # -----------------------------
+    # SECURITY RECOMMENDATIONS
+    # -----------------------------
+
+    story.append(Spacer(1,18))
+
+    story.append(
+        Paragraph(
+            "<font color='#0B3D91'><b>6. SECURITY RECOMMENDATIONS</b></font>",
+            styles["Heading2"]
+        )
+    )
+
+    story.append(Spacer(1,8))
+
+    recommendations = []
+
+    risk = result["result"]["risk"]
+
+    if risk == "SAFE":
+        recommendations.extend([
+            "✓ Verify the domain before entering sensitive information.",
+            "✓ Ensure HTTPS is enabled before browsing.",
+            "✓ Check SSL certificate validity regularly.",
+            "✓ Use VirusTotal to verify unknown URLs.",
+            "✓ Avoid clicking links from unknown or untrusted sources."
+        ])
+
+    elif risk == "SUSPICIOUS":
+        recommendations.extend([
+            "⚠ Verify the sender before opening the URL.",
+            "⚠ Do not enter passwords until the website is verified.",
+            "⚠ Cross-check the URL with VirusTotal.",
+            "⚠ Inspect the SSL certificate carefully.",
+            "⚠ Contact your administrator if unsure."
+        ])
+
+    else:
+        recommendations.extend([
+            "✖ Do NOT open the website.",
+            "✖ Never enter passwords or OTPs.",
+            "✖ Report the URL to your security administrator.",
+            "✖ Block the domain if used inside an organization.",
+            "✖ Delete emails or messages containing this URL."
+        ])
+
+    for item in recommendations:
+        if item.startswith("✓"):
+            color = "#16A34A"
+
+        elif item.startswith("⚠"):
+            color = "#F59E0B"
+
+        else:
+            color = "#DC2626"
+
+        story.append(
+            Paragraph(
+                f"<font color='{color}'><b>{item}</b></font>",
+                styles["BodyText"]
+            )
+        )
+
+        story.append(Spacer(1,5))
+    
+    # ===========================
+    # Footer
+    # ===========================
+
+    story.append(Spacer(1,20))
+
+    story.append(
+        Paragraph(
+            "<para align='center'><font color='#666666'>© 2026 PhishGuard. All rights reserved.</font></para>",
+            styles["BodyText"]
+        )
+    )
 
     doc.build(story)
 

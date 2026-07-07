@@ -20,16 +20,81 @@
             <button class='btn'
                 onclick='scanURL()'>Scan</button>
             <p id='status'></p>
-            <div id='result' class='hidden'>
-                <h3>Result</h3>
+            <div id="result" class="hidden">
 
-                <p id='safe'></p>
+                <h2>🛡 Phishing Analysis Result</h2>
 
-                <h4>VirusTotal</h4>
-                <p id="vtStatus"></p>
-                <p id="vtHarmless"></p>
-                <p id="vtMalicious"></p>
-                <p id="vtSuspicious"></p>
+                <div class="dashboard">
+
+                    <div class="info-card">
+
+                        <h3>Risk Assessment</h3>
+
+                        <p><strong>Risk</strong></p>
+                        <p id="risk"></p>
+                        <p><strong>Score</strong></p>
+                        <p id="score"></p>
+
+                    </div>
+
+                    <div class="info-card">
+
+                        <h3>🌐 URL Details</h3>
+
+                        <p><strong>Domain:</strong> <span id="domain"></span></p>
+                        <p><strong>Protocol:</strong> <span id="scheme"></span></p>
+                        <p><strong>Path:</strong> <span id="path"></span></p>
+                        <p><strong>Length:</strong> <span id="length"></span></p>
+                        <p><strong>DNS:</strong> <span id="dns"></span></p>
+                        <p><strong>Domain Age:</strong> <span id="age"></span></p>
+                    </div>
+
+                    <div class="info-card">
+
+                        <h3>🔒 SSL & VirusTotal</h3>
+
+                        <p><strong>SSL:</strong> <span id="sslStatus"></span></p>
+                        <p><strong>Issuer:</strong> <span id="sslIssuer"></span></p>
+                        <p><strong>Expiry:</strong> <span id="sslExpiry"></span></p>
+                        <p><strong>Days Left:</strong> <span id="sslDays"></span></p>
+
+                        <hr>
+
+                        <p><strong>VirusTotal:</strong> <span id="vtStatus"></span></p>
+                        <p><strong>Harmless:</strong> <span id="vtHarmless"></span></p>
+                        <p><strong>Malicious:</strong> <span id="vtMalicious"></span></p>
+                        <p><strong>Suspicious:</strong> <span id="vtSuspicious"></span></p>
+
+                    </div>
+
+                    <div class="info-card">
+
+                        <h3>📝 Detection Reasons</h3>
+
+                        <ul id="reasons"></ul>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="export-section">
+
+                    <h3>Export Report</h3>
+
+                    <div class="export-buttons">
+
+                        <button id="pdfBtn" class="btn" onclick="downloadPDF()">
+                            📄 Download PDF
+                        </button>
+
+                        <button id="jsonBtn" class="btn" onclick="downloadJSON()">
+                            📁 Download JSON
+                        </button>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,46 @@
+{
+    "url": "https://github.com",
+    "basic_info": {
+        "scheme": "https",
+        "domain": "github.com",
+        "path": "",
+        "query": ""
+    },
+    "checks": {
+        "https": true,
+        "ip_address": false,
+        "keywords": [],
+        "url_length": 18,
+        "length_status": "Normal",
+        "dot_count": 1,
+        "dot_status": "Normal",
+        "shortener": false,
+        "special_characters": [],
+        "typosquatting": null,
+        "dns_status": "Valid",
+        "dns_records": [
+            "20.207.73.82"
+        ],
+        "domain_age": 6844,
+        "age_status": "Normal"
+    },
+    "ssl": {
+        "status": "Valid",
+        "issuer": "Sectigo Limited",
+        "expiry": "2026-09-30",
+        "days_left": 86
+    },
+    "virustotal": {
+        "status": "Available",
+        "malicious": 0,
+        "suspicious": 0,
+        "harmless": 61
+    },
+    "result": {
+        "score": 0,
+        "risk": "SAFE",
+        "reasons": [
+            "No suspicious indicators detected."
+        ]
+    }
+}
