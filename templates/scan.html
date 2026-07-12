@@ -5,42 +5,66 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width,initial-scale=1'>
     <title>Scan</title>
-    <link rel='stylesheet' href='../static/css/style.css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
     <header>
-        <div class='logo'>🛡 PhishGuard</div>
-        <nav><a href='/'>Home</a><a href='/scan'>Scan</a><a href='/history'>History</a><a
-                href='/login'>Login</a><a href='/register'>Register</a></nav>
+        <div class='logo'><i class="fa-solid fa-shield-halved"></i> PhishGuard</div>
+        <nav><a href='/'>Home</a><a href='/scan'>Scan</a></nav>
     </header>
     <div class='container'>
-        <div class='card'>
-            <h2>Scan URL</h2><input id='url' class='input' placeholder='https://example.com'><br><br>
-            <button class='btn'
-                onclick='scanURL()'>Scan</button>
+        <div class='dashboard-card'>
+            <div class="scan-header">
+                <span class="scan-label">URL SECURITY SCANNER</span>
+                <h2>Analyze a Suspicious URL</h2>
+                <p>
+                    Enter a URL to inspect its security signals and 
+                    calculate the potential phishing risk.
+                </p>
+            </div>
+
+            <div class="scan-input-group">
+                <div class="scan-input-wrapper">
+                    <i class="fa-solid fa-link"></i>
+                    <input 
+                        id="url" 
+                        class="input" 
+                        type="url"
+                        placeholder="https://example.com"
+                    >
+                </div>
+                <button id="scanBtn" class="btn" onclick='scanURL()'>
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    Scan URL
+                </button>
+            </div>
+
+            <div id="scanLoader" class="scan-loader hidden">
+                <div class="scanner-wrapper">
+                    <div class="scanner-ring"></div>
+                    <i class="fa-solid fa-shield-halved scanner-shield"></i>
+                </div>
+
+                <span>Analyzing URL Security</span>
+                <small>Running security checks...</small>
+            </div>
+
             <p id='status'></p>
             <div id="result" class="hidden">
-
-                <h2>🛡 Phishing Analysis Result</h2>
-
+                <h2><i class="fa-solid fa-shield-halved"></i> Phishing Analysis Result</h2>
                 <div class="dashboard">
-
                     <div class="info-card">
-
                         <h3>Risk Assessment</h3>
-
                         <p><strong>Risk</strong></p>
                         <p id="risk"></p>
                         <p><strong>Score</strong></p>
                         <p id="score"></p>
-
                     </div>
 
                     <div class="info-card">
-
                         <h3>🌐 URL Details</h3>
-
                         <p><strong>Domain:</strong> <span id="domain"></span></p>
                         <p><strong>Protocol:</strong> <span id="scheme"></span></p>
                         <p><strong>Path:</strong> <span id="path"></span></p>
@@ -50,9 +74,7 @@
                     </div>
 
                     <div class="info-card">
-
                         <h3>🔒 SSL & VirusTotal</h3>
-
                         <p><strong>SSL:</strong> <span id="sslStatus"></span></p>
                         <p><strong>Issuer:</strong> <span id="sslIssuer"></span></p>
                         <p><strong>Expiry:</strong> <span id="sslExpiry"></span></p>
@@ -68,31 +90,36 @@
                     </div>
 
                     <div class="info-card">
-
                         <h3>📝 Detection Reasons</h3>
-
                         <ul id="reasons"></ul>
-
                     </div>
-
                 </div>
 
-                <hr>
-
                 <div class="export-section">
-
-                    <h3>Export Report</h3>
-
+                    <span class="export-label">EXPORT ANALYSIS</span>
+                    <h3>
+                        <i class="fa-solid fa-file-export"></i>
+                        Export Security Report
+                    </h3>
+                    <p class="export-description">
+                        Save the complete scan analysis for documentation or further processing.
+                    </p>
                     <div class="export-buttons">
-
-                        <button id="pdfBtn" class="btn" onclick="downloadPDF()">
-                            📄 Download PDF
+                        <button id="pdfBtn" class="export-btn pdf-export" onclick="downloadPDF()">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span>
+                                <strong>PDF Report</strong>
+                                <small>Professional Security Report</small>
+                            </span> 
                         </button>
 
-                        <button id="jsonBtn" class="btn" onclick="downloadJSON()">
-                            📁 Download JSON
+                        <button id="jsonBtn" class="export-btn json-export" onclick="downloadJSON()">
+                            <i class="fa-solid fa-file-code"></i>
+                            <span>
+                                <strong>JSON Data</strong>
+                                <small>Structured Analysis Data</small>
+                            </span> 
                         </button>
-
                     </div>
                 </div>
             </div>

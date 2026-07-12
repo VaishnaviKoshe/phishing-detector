@@ -1,14 +1,22 @@
 
 async function scanURL(){
     console.log("NEW SCRIPT LOADED");
+    const scanLoader = document.getElementById("scanLoader");
+    const status = document.getElementById("status")
     const url = document.getElementById("url").value;
  
+    /* Validate URL input first */
     if (!url) {
         alert("Enter a URL");
         return;
     }
 
-document.getElementById("status").innerText = "Scanning...";
+    /* Start scanning state */
+scanLoader.classList.remove("hidden");
+    status.innerText = "";
+    status.className = "";
+
+document.getElementById("result").classList.add("hidden");
 
     try {
         const response = await fetch("/analyze", {
@@ -23,9 +31,7 @@ document.getElementById("status").innerText = "Scanning...";
 
         const data = await response.json();
 
-document.getElementById("result").classList.remove("hidden");
-
-document.getElementById("status").innerText = "Completed";
+        document.getElementById("result").classList.remove("hidden");
 
         /* Risk */
 
@@ -95,7 +101,7 @@ document.getElementById("vtMalicious").innerText =
 document.getElementById("vtSuspicious").innerText =
     data.virustotal.suspicious;
 
-        /* Reasons */
+        /* Detection Reasons */
 
 const reasonList = document.getElementById("reasons");
 
@@ -117,14 +123,21 @@ document.getElementById("pdfBtn").classList.remove("hidden");
 
 document.getElementById("jsonBtn").classList.remove("hidden");
 
+status.innerHTML = '<i class="fa-solid fa-circle-check"></i> Analysis Complete';
+status.className = "scan-status-success";
+
     }
     catch (error) {
 
-        document.getElementById("status").innerText = "Error";
+        status.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Analysis Failed';
+        status.className = "scan-status-error";
 
         alert("Failed to connect to backend.");
         console.error(error);
 
+    }
+    finally {
+        scanLoader.classList.add("hidden");
     }
     
 }

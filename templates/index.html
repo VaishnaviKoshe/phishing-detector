@@ -1,152 +1,347 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width,initial-scale=1'>
-    <title>Home</title>
-    <link rel='stylesheet' href='../static/css/style.css'>
-</head>
+    <head>
+        <meta charset='UTF-8'>
+        <meta name='viewport' content='width=device-width,initial-scale=1'>
+        <title>PhishGuard</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+        <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}">
+    </head>
 
-<body>
-    <header>
-        <div class='logo'>🛡 PhishGuard</div>
-        <nav><a href='/'>Home</a><a href='/scan'>Scan</a><a href='/history'>History</a><a
-                href='/login'>Login</a><a href='/register'>Register</a></nav>
-    </header>
-    <div class="hero">
+    <body>
+        <header>
+            <div class='logo'><i class="fa-solid fa-shield-halved"></i> PhishGuard</div>   
+            <nav><a href='/'>Home</a><a href='/scan'>Scan</a></nav>
+        </header>
+        <section class="hero">
+            <div class="hero-left">
+                <h1>
+                    Intelligent Phishing Detection System
+                </h1>
 
-<div class="hero-content">
+                <p>
+                    Analyze suspicious URLs before opening them.
+                    PhishGuard performs HTTPS verification,
+                    SSL certificate validation, DNS lookup,
+                    URL analysis and VirusTotal reputation checks
+                    to detect phishing websites in seconds.
+                </p>
 
-<h1>
-Protect Yourself From
-<span>Phishing Attacks</span>
-</h1>
+                <center><a href="/scan" class="btn">
+                    🔍 Scan URL Now
+                </a></center>
+            </div>
 
-<p>
-Analyze suspicious websites before clicking.
-Our intelligent phishing detection system performs
-multiple security checks including HTTPS verification,
-IP detection, suspicious keyword analysis and
-VirusTotal integration.
-</p>
+            <div class="hero-right">
+                <div class="shield-circle">
+                    🛡️
+                </div>
 
-<center><a href="/scan" class="btn">
+            </div>
+        </section>
 
-🔍 Scan URL Now
+        <section class="security-status-section">
+            <div class="security-status-panel">
+                <div class="status-panel-header">
+                    <div>
+                        <span class="status-label">SYSTEM STATUS</span>
+                        <h3>Security Analysis Engine</h3>
+                    </div>
 
-</a></center>
+                    <div class="system-ready">
+                        <span class="status-dot"></span>
+                            System Ready
+                    </div>
+                </div>
 
-</div>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <i class="fa-solid fa-link"></i>
+                        <div>
+                            <span>URL Analysis</span>
+                            <small>URL structure inspection</small>
+                        </div>
+                        <strong class="ready">READY</strong>
+                    </div>
 
-</div>
+                    <div class="status-item">
+                        <i class="fa-solid fa-lock"></i>
+                        <div>
+                            <span>SSL Verification</span>
+                            <small>Certificate validation</small>
+                        </div>
+                       <strong class="ready">READY</strong>
+                    </div>
 
-<section class="features">
+                    <div class="status-item">
+                        <i class="fa-solid fa-globe"></i>
+                        <div>
+                            <span>DNS Lookup</span>
+                            <small>Domain record analysis</small>
+                        </div>
+                        <strong class="ready">READY</strong>
+                    </div>
 
-<center><h2>Our Features</h2></center>
+                    <div class="status-item">
+                        <i class="fa-solid fa-shield-virus"></i>
+                        <div>
+                            <span>VirusTotal</span>
+                            <small>URL reputation analysis</small>
+                        </div>
+                        <strong class="active">ACTIVE</strong>
+                    </div>
 
-<div class="card-container">
+                    <div class="status-item">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <div>
+                            <span>Risk Engine</span>
+                            <small>Threat score calculation</small>
+                        </div>
+                        <strong class="ready">READY</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div class="card">
+        <section class="analysis-flow">
+            <p class="flow-label">HOW PHISHGUARD WORKS</p>
+            <div class="flow-container">
+                <div class="flow-step">
+                    <i class="fa-solid fa-link"></i>
+                    <span>URL Input</span>
+                </div>
 
-<h3>🔒 HTTPS Detection</h3>
+                <div class="flow-line"></div>
+                <div class="flow-step">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <span>URL Analysis</span>   
+                </div>
 
-<p>
-Checks whether the website uses a secure HTTPS connection.
-</p>
+                <div class="flow-line"></div>
+                <div class="flow-step">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Security Checks</span>
+                </div>
 
-</div>
+                <div class="flow-line"></div>
+                <div class="flow-step">
+                    <i class="fa-solid fa-shield-virus"></i>
+                    <span>VirusTotal</span>
+                </div>
 
-<div class="card">
+                <div class="flow-line"></div>
+                <div class="flow-step">
+                    <i class="fa-solid fa-chart-simple"></i>
+                    <span>Risk Score</span> 
+                </div>
+            </div>
+        </section>
 
-<h3>🌐 URL Analysis</h3>
+        <section class="features">
+            <div class="features-heading">
+                <span class="section-label">PHISHGUARD CAPABILITIES</span>
+                <h2>Powerful Security Analysis</h2>
+                <p>
+                    Multiple security checks work together to analyze suspicious URLs
+                    and identify potential phishing threats.
+                </p>
+            </div>
+            <div class="feature-grid">
 
-<p>
-Detects suspicious keywords, long URLs and hidden tricks.
-</p>
+                 <!-- URL Intelligence -->
+                <div class="card">
+                    <h4>
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        URL Intelligence
+                    </h4>
+                    <ul>
+                        <li>URL Validation</li>
+                        <li>URL Length Analysis</li>
+                        <li>Suspicious Keyword Detection</li>
+                        <li>Dot Count Analysis</li>
+                        <li>Special Character Detection</li>
+                    </ul>
+                </div>
 
-</div>
+                <!-- Domain Intelligence -->
+                <div class="card">
+                    <h4>
+                        <i class="fa-solid fa-globe"></i>
+                        Domain Intelligence
+                    </h4>
+                    <ul>
+                        <li>WHOIS Domain Age Lookup</li>
+                        <li>DNS Record Verification</li>
+                        <li>IP Address Detection</li>
+                        <li>Typosquatting Detection</li>
+                    </ul>
+                </div>
 
-<div class="card">
+                <!-- Security Verification -->
+                <div class="card">
+                    <h4>
+                        <i class="fa-solid fa-lock"></i>
+                        Security Verification
+                    </h4>
+                    <ul>
+                        <li>HTTPS Verification</li>
+                        <li>SSL Certificate Analysis</li>
+                        <li>URL Shortener Detection</li>
+                    </ul>
+                </div>
 
-<h3>🦠 VirusTotal</h3>
+                <!-- Threat Intelligence -->
+                <div class="card">
+                    <h4>
+                        <i class="fa-solid fa-shield-halved"></i>
+                        Threat Intelligence
+                    </h4>
+                    <ul>
+                        <li>VirusTotal URL Reputation</li>
+                        <li>Risk Scoring System</li>
+                    </ul>
+                </div>
 
-<p>
-Ready for VirusTotal API integration for malware analysis.
-</p>
+                <!-- Reporting & Export -->
+                <div class="card">
+                    <h4>
+                        <i class="fa-solid fa-file-pdf"></i>
+                        Reporting & Export
+                    </h4>
+                    <ul>
+                        <li>Professional PDF Report Generation</li>
+                        <li>JSON API Responses</li>
+                        <li>Logging Support</li>
+                    </ul>
+                </div>
 
-</div>
+                <!-- Deployment -->
+                <div class="card">
+                    <h4>
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        Deployment & Platform
+                    </h4>
+                    <ul>
+                        <li>Cloud Deployment using Render</li>
+                        <li>Fast Web-based Interface</li>
+                        <li>Easy Integration & Scalable Design</li>
+                    </ul>
+                </div>
 
-<div class="card">
+            </div>
+        </section>
 
-<h3>📜 Scan History</h3>
+        <section class="why-section">
+            <div class="why-header">
+                <span class="why-label">WHY PHISHGUARD?</span>
+                <h2>Built for Smarter URL Security</h2>
+                <p>
+                    Fast, multi-layered phishing analysis designed to make
+                    suspicious URL detection simple and understandable.
+                </p>
+            </div>
 
-<p>
-Every logged-in user can view previous scan reports.
-</p>
+            <div class="why-grid">
+                <!-- Fast Detection -->
+                <div class="why-card">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h3>Fast Detection</h3>
+                    <p>
+                        Analyze suspicious URLs in seconds through
+                        automated security checks.
+                    </p>
+                </div>
 
-</div>
+                <!-- Multi-Layer Analysis -->
+                <div class="why-card">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <h3>Multi-Layer Analysis</h3>
+                    <p>
+                        Combines URL, SSL, DNS, WHOIS and reputation-based
+                        security analysis.
+                    </p>
+                </div>
 
-</div>
+                <!-- Smart Risk Scoring -->
+                <div class="why-card">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h3>Smart Risk Scoring</h3>
+                    <p>
+                        Converts multiple security signals into a clear
+                        and understandable threat score.
+                    </p>
+                </div>
 
-</section>
+                <!-- Threat Intelligence -->
+                <div class="why-card">
+                    <i class="fa-solid fa-shield-virus"></i>
+                    <h3>Threat Intelligence</h3>
+                    <p>
+                        Uses VirusTotal reputation data to identify known
+                        malicious or suspicious URLs.
+                    </p>
+                </div>
 
-<section class="features">
+                <!-- Professional Reports -->
+                <div class="why-card">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <h3>Professional Reports</h3>
+                    <p>
+                        Generates detailed PDF reports with security findings
+                        and analysis results.
+                    </p>
+                </div>
 
-<center><h2>Why Choose PhishGuard?</h2></center>
+                <!-- Web Based -->
+                <div class="why-card">
+                    <i class="fa-solid fa-globe"></i>
+                    <h3>Web-Based & Accessible</h3>
+                    <p>
+                        Scan suspicious URLs through a simple web interface
+                        without complex security tools.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-<div class="card-container">
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>PhishGuard</span>
+                    </div>
+                    <p>
+                        Intelligent URL threat analysis designed to detect
+                        suspicious and potentially malicious links.
+                    </p>
+                </div>
 
-<div class="card">
+                <div class="footer-column">
+                    <h4>QUICK LINKS</h4>
+                    <a href="/">Home</a>
+                    <a href="/scan">Scan URL</a>
+                    <a href="#features">Features</a>
+                </div>
 
-<h3>⚡ Fast Detection</h3>
+                <div class="footer-column">
+                    <h4>SECURITY ENGINE</h4>
+                    <span>URL Analysis</span>
+                    <span>SSL & DNS Verification</span>
+                    <span>VirusTotal Intelligence</span>
+                    <span>Risk Scoring</span>
+                </div>
+            </div>
 
-<p>
-
-Instant phishing analysis in seconds.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>🛡 Secure Browsing</h3>
-
-<p>
-
-Stay protected from fake websites before opening them.
-
-</p>
-
-</div>
-
-<div class="card">
-
-<h3>📊 Smart Reports</h3>
-
-<p>
-
-Easy-to-read reports with security status and VirusTotal results.
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<footer>
-
-<center><h2 style="color:#58a6ff;">
-🛡 PhishGuard
-</h2>
-
-<p>Protecting users from phishing attacks.</p></center>
-
-</footer>
-    <script src='../static/js/script.js'></script>
-</body>
-
+            <div class="footer-bottom">
+                <p>© 2026 PhishGuard. All rights reserved.</p>
+                <span>
+                    <i class="fa-solid fa-shield"></i>
+                    Built for URL Security
+                </span>
+            </div>
+        </footer>
+        <script src='../static/js/script.js'></script>
+    </body>
 </html>
