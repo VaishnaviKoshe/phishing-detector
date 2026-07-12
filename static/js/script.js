@@ -12,6 +12,17 @@ async function scanURL(){
         return;
     }
 
+    try {
+        const parsedURL = new URL(url);
+        if (parsedURL.protocol !== "http:" && parsedURL.protocol !== "https:") {
+            alert("Please enter a valid HTTP or HTTPS URL");
+            return;
+        }
+    } catch (error) {
+        alert("Please enter a valid URL. Example: https://google.com");
+        return;
+    }
+
     /* Start scanning state */
 scanLoader.classList.remove("hidden");
     status.innerText = "";
