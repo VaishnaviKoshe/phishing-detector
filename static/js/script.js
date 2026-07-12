@@ -1,12 +1,13 @@
 
-async function scanURL(){
-    console.log("NEW SCRIPT LOADED");
+async function scanURL(){    
     const scanLoader = document.getElementById("scanLoader");
     const status = document.getElementById("status")
-    const url = document.getElementById("url").value;
+    const url = document.getElementById("url").value.trim();
  
     /* Validate URL input first */
     if (!url) {
+    scanLoader.classList.add("hidden");
+        status.innerText = "";
         alert("Enter a URL");
         return;
     }
@@ -139,7 +140,6 @@ status.className = "scan-status-success";
     finally {
         scanLoader.classList.add("hidden");
     }
-    
 }
 
 function downloadPDF() {
